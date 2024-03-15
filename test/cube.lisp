@@ -208,7 +208,7 @@ void main()
     (glfw:set-window-size-callback 'viewport-callback)
     
     (gl:Enable GL:DEBUG_OUTPUT)
-    (gl:DebugMessageCallback (callback dgl:debug-callback) (make-pointer 0))
+    (gl:DebugMessageCallback (callback dgl-test:debug-callback) (make-pointer 0))
     
     (let* ((program (dgl-test/triangle:make-shader-program
 		     (list (list GL:VERTEX_SHADER *vertex-source*)
