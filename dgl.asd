@@ -9,7 +9,6 @@
   :depends-on ("cffi" "xdoc")
   :serial t
   :components ((:file "package")
-	       (:static-file "gl.xml")
 	       (:file "dgl"))
   :in-order-to ((asdf:test-op (asdf:test-op "dgl/test"))))
 

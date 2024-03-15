@@ -1,12 +1,7 @@
 (cl:in-package :dgl)
 
 (defparameter *spec-path*
-  (make-pathname :name "gl"
-		 :type "xml"
-		 :defaults (asdf:system-source-directory "dgl")))
-
-(defparameter *spec-url*
-  "https://raw.githubusercontent.com/KhronosGroup/OpenGL-Registry/main/xml/gl.xml")
+  (asdf:system-relative-pathname "dgl" "registry/xml/gl.xml"))
 
 (xdoc:define-document *gl.xml*
     (:name "registry"
@@ -141,7 +136,7 @@
 				  (tag-type child)))
 			  (remove "param" (xdoc:children tag)
 				  :key #'xdoc:name
-				  :test #'string/=)))))))
+				  :test #'string/)))))))
 
 (defun remove-enum (tag his)
   (declare (ignore his))
@@ -179,12 +174,7 @@
 (defun compile-spec (path)
   (let ((*enums* (make-hash-table :test 'equal))
 	(*funcs* (make-hash-table :test 'equal)))
-    (restart-case
-	(xdoc:mapdoc *gl.xml* path)
-      (download-from-internet ()
-	:report (lambda (s) (format s "Download the registry from the Internet"))
-	(download)
-	(compile-spec path)))
+    (xdoc:mapdoc *gl.xml* path)
     (values *enums* *funcs*)))
 
 (defun make-gl ()
@@ -192,14 +182,5 @@
     (initialize-type-table)
     (maphash #'make-enum enums)
     (maphash #'make-command funcs)))
-
-(defun download ()
-  (multiple-value-bind (_ __ code)
-      (uiop:run-program (format nil "curl -o ~A ~A"
-				(uiop:native-namestring *spec-path*)
-				*spec-url*))
-    (declare (ignore _ __))
-    (unless (zerop code)
-      (warn "curl terminated abnormally (~A)" code))))
 
 (make-gl)
