@@ -1,7 +1,7 @@
 (cl:in-package :dgl)
 
 (defparameter *spec-path*
-  (asdf:system-relative-pathname "dgl" "registry/xml/gl.xml"))
+  (asdf:system-relative-pathname "dgl" "gl.xml"))
 
 (xdoc:define-document *gl.xml*
     (:name "registry"
@@ -136,7 +136,7 @@
 				  (tag-type child)))
 			  (remove "param" (xdoc:children tag)
 				  :key #'xdoc:name
-				  :test #'string/)))))))
+				  :test #'string/=)))))))
 
 (defun remove-enum (tag his)
   (declare (ignore his))
