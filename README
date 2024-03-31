@@ -1,0 +1,17 @@
+dgl: CFFI core OpenGL binding generator
+
+Not Lisp-friendly. Be prepared to :use CFFI.
+I wanted bindings as close to the C API as possible, as they look in online
+documentation and tutorials. Names aren't "lispified" except to replace the
+GL prefix with a Lisp package.
+
+GL_ENUM_NAME => GL:ENUM_NAME
+glFunctionName => GL:FUNCTIONNAME
+
+Each function grabs its pointer on its first invocation.
+Bind DGL:*ADDRESS-FUNCTION* to your flavor of #'getProcAddress before using.
+(That's a Lisp function, not a pointer.)
+
+Regenerate the bindings with (DGL:MAKE-GL).
+
+A few stupid OpenGL programs can be found in test/. Run with asdf:test-system.
